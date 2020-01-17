@@ -165,3 +165,130 @@ High Performance Fat Burning Formula - (100% Natural)
 indiahealthmantra.com
 Recommended by
 We use cookies for various purposes including analytics. By continuing to use Pastebin, you agree to our use of cookies as described in the Cookies Policy. OK,
+#include<iostream>
+using namespace std;
+int a[100];
+int visit[100];
+
+bool check(int sum,int n)
+{
+    for(int i=0;i<100;i++)
+    {
+        visit[i]=0;
+    }
+
+    bool dp[100][100];
+    for(int i=0;i<100;i++)
+    {
+        for(int j=0;j<100;j++)
+        {
+            dp[i][j]=false;
+        }
+    }
+    dp[0][0]=true;
+
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=0;j<=sum;j++)
+        {
+            if(j==0)
+            {
+                dp[i][j]=true;
+                continue;
+            }
+
+            dp[i][j]=dp[i-1][j];
+
+            if((j-a[i-1])>=0)
+            {
+                dp[i][j]=dp[i][j]|dp[i-1][j-a[i-1]];
+            }
+        }
+    }
+    if(dp[n][sum]==0)
+    {
+        return false;
+    }
+    int sum2=sum;
+
+    for(int j=n;j>=1;j--)
+    {
+        if((sum2-a[j-1])<0)
+            continue;
+
+        if(dp[j-1][sum2-a[j-1]]==0)
+        {
+            continue;
+        }
+        else
+        {
+            visit[j]=1;
+            sum2=sum2-a[j-1];
+        }
+    }
+
+    //again checking after eliminating
+
+    for(int i=0;i<100;i++)
+    {
+        for(int j=0;j<100;j++)
+        {
+            dp[i][j]=false;
+        }
+    }
+    dp[0][0]=true;
+
+
+
+
+for(int i=1;i<=n;i++)
+    {
+        for(int j=0;j<=sum;j++)
+        {
+            if(j==0)
+            {
+                dp[i][j]=true;
+                continue;
+            }
+
+            dp[i][j]=dp[i-1][j];
+
+              if(visit[i]==1)
+                    continue;
+
+            if((j-a[i-1])>=0)
+            {
+                dp[i][j]=dp[i][j]|dp[i-1][j-a[i-1]];
+            }
+        }
+    }
+    return dp[n][sum];
+}
+int main()
+{
+    int n;
+    cin>>n;
+    int sum=0;
+
+
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i];
+        sum+=a[i];
+    }
+
+    int mx_sum=sum/2;
+
+
+
+    for(int i=mx_sum;i>=0;i--)
+    {
+
+        if(check(i,n))
+         {
+             cout<<i<<endl;
+            return 0;
+         }
+    }
+
+}
