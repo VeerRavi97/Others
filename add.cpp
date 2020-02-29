@@ -10,6 +10,7 @@ class Node{
 		this->next=NULL;
 	}
 };
+// hello
 class Solution{
 	
 	public:
